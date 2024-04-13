@@ -96,7 +96,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
     clickOn("#endPathField");
     write("Atmospheric, Oceanic and Space Sciences");
     clickOn("#walkingTimesCheckbox");
-    assertEquals("Cannot use checkbox when shortest path has not been found.", shortestPathLabel.getText());
+    assertEquals("Cannot use the checkbox when a shortest path has not been found.", shortestPathLabel.getText());
   }
 
   /**

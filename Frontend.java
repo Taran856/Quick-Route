@@ -100,24 +100,30 @@ public class Frontend extends Application implements FrontendInterface {
       startingLocation = startPathField.getText();
       endingLocation = endPathField.getText();
       shortestPath = back.findShortestPath(startingLocation, endingLocation);
-      String label = "Results List: ";
-      
-      if (walkingTimesCheckbox.isSelected()) {
-        List<Double> shortestPathTimes = back.getTravelTimesOnPath(startingLocation, endingLocation);
-        for (int i = 0; i<shortestPath.size(); i++) {
-          label += "\n\t" + shortestPath.get(i);
 
-          if (i != shortestPath.size()-1) {
-            label += "\n\t  (" + shortestPathTimes.get(i) + " seconds)";
+      if (shortestPath == null) {
+        shortestPathLabel.setText("There was an error with finding the shortest path between " + startingLocation + " and " + endingLocation + ".");
+      } else {
+        String label = "Results List: ";
+      
+        if (walkingTimesCheckbox.isSelected()) {
+          List<Double> shortestPathTimes = back.getTravelTimesOnPath(startingLocation, endingLocation);
+          for (int i = 0; i<shortestPath.size(); i++) {
+            label += "\n\t" + shortestPath.get(i);
+
+            if (i != shortestPath.size()-1) {
+              label += "\n\t  (" + shortestPathTimes.get(i) + " seconds)";
+            }
+          }
+        } else {
+          for (int i = 0; i<shortestPath.size(); i++) {
+            label += "\n\t" + shortestPath.get(i);
           }
         }
-      } else {
-        for (int i = 0; i<shortestPath.size(); i++) {
-          label += "\n\t" + shortestPath.get(i);
-        }
+
+        shortestPathLabel.setText(label);
       }
 
-      shortestPathLabel.setText(label);
     });
   }
 
@@ -143,7 +149,7 @@ public class Frontend extends Application implements FrontendInterface {
 
     walkingTimesCheckbox.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
       if (shortestPath == null) {
-        shortestPathLabel.setText("Cannot use checkbox when shortest path has not been found.");
+        shortestPathLabel.setText("Cannot use the checkbox when a shortest path has not been found.");
       } else {
         String label = "Results List: ";
 
@@ -206,8 +212,12 @@ public class Frontend extends Application implements FrontendInterface {
         String label = "Locations within " + time + " seconds of " + startingLocation;
         List<String> reachableLocations = back.getReachableLocations(startingLocation, Double.parseDouble(time));
 
-        for (int i = 0; i<reachableLocations.size(); i++) {
-          label += "\n\t" + reachableLocations.get(i);
+        if (reachableLocations == null) {
+          label = "There was an error with finding the locations within " + time + "seconds of " + startingLocation + ".";
+        } else {
+          for (int i = 0; i<reachableLocations.size(); i++) {
+            label += "\n\t" + reachableLocations.get(i);
+          }
         }
 
         reachableLocationsLabel.setText(label);
