@@ -25,62 +25,100 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @BeforeEach
   public void setup() throws Exception {
-    ApplicationTest.launch(FrontendPlaceholder.class);
-  }
-  
-   
-  /**
-   * This test finds the label and button with the given ids, and confirms
-   * that the text in each has been properly initialized.
-   */
-  @Test
-  public void testButtonAndLabelExist() {
-    Label pathLabel = lookup("#pathLabel").query();
-    clickOn("#findPathButton");
-    assertEquals("Results List: \n\tMemorial Union\n\tSciene Hall\n\tPyschology\n\tComputer Science",pathLabel.getText());
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
+    ApplicationTest.launch(Frontend.class);
   }
 
   /**
-   * This test confirms that the About and Quit buttons have been created correctly.
+   * This test confirms that the About button displays instructions for how to use the program when clicked. When clicked again, 
+   * the test ensures it closes out of the text.
    */
   @Test
   public void testAboutAndQuit() {
-    Button aboutButton = lookup("#aboutButton").query();
-    assertEquals("About",aboutButton.getText());
-    Button quitButton = lookup("#quitButton").query();
-    assertEquals("Quit",quitButton.getText());
+    Label aboutLabel = lookup("#aboutLabel").query();
+    String label = "This application loads a graph from a dot file and has two features users can use. \nThe " +
+        "\"Find Shortest Path\" feature allows the user to input a starting location and an ending location. The program then\n" +
+        "finds the shortest path between the two locations, starting at the starting location and ending at the ending location.\n" +
+        "The walking times checkbox allows the user to adds times between the adjacent locations along a path. The \"Locations\n" +
+        "Within\" feature allows the user to input a starting location and a time. The program finds all the locations that are\n" +
+        "within the specified time from the starting location. Click the About button again to close this text.";
+
+    clickOn("#aboutButton");
+    assertEquals(label, aboutLabel.getText());
+    clickOn("#aboutButton");
+    assertEquals("", aboutLabel.getText());
   }
 
   /**
-   * This test confirms the checkbox and checkbox label were created. Tests that clicking on the checkbox
-   * makes the walkingTimesLabel display the list of travel times.
+   * This test has the program find the shortest path starting at Union South and ending at Atmospheric, Oceanic and Space Sciences.
+   * The result is checked to make sure the program outputted the actual shortest path.
    */
   @Test
-  public void testCheckbox() {
-    Label checkboxLabel = lookup("#checkboxLabel").query();
-    assertEquals("Show Walking Times",checkboxLabel.getText());
-
-    Label walkingTimesLabel = lookup("#walkingTimesLabel").query();
-    clickOn("#walkingTimesCheckbox");
-    assertEquals("Results List (with travel times):\n\tMemorial Union\n\t-(30sec)->Science Hall\n\t-(170sec)->"+
-        "Psychology\n\t-(45sec)->Computer Science\n\tTotal time: 4.08min",walkingTimesLabel.getText());
+  public void testfindPathButton() {
+    Label shortestPathLabel = lookup("#shortestPathLabel").query();
+    
+    clickOn("#startPathField");
+    write("Union South");
+    clickOn("#endPathField");
+    write("Atmospheric, Oceanic and Space Sciences");
+    clickOn("#findPathButton");
+    assertEquals("Results List: \n\tUnion South\n\tComputer Sciences and Statistics\n\tAtmospheric, Oceanic and Space Sciences", shortestPathLabel.getText());
   }
 
   /**
-   * This test confirms the that clicking on the findLocations button returns the list of locations that are reachable within a certain time
+   * This test has the program find the shortest path starting at Union South and ending at Atmospheric, Oceanic and Space Sciences.
+   * Then the checkbox is clicked to include walking times. The result is checked to make sure the program outputted the correct
+   *  shortest path and walking times.
+   */
+  @Test
+  public void testWalkingTimes() {
+    Label shortestPathLabel = lookup("#shortestPathLabel").query();
+    
+    clickOn("#startPathField");
+    write("Union South");
+    clickOn("#endPathField");
+    write("Atmospheric, Oceanic and Space Sciences");
+    clickOn("#findPathButton");
+    clickOn("#walkingTimesCheckbox");
+    assertEquals("Results List: \n\tUnion South\n\t  (176.0 seconds)\n\tComputer Sciences and Statistics\n\t  (80.0 seconds)\n\tAtmospheric, Oceanic and Space Sciences", shortestPathLabel.getText());
+  }
+
+  /**
+   * This test tests when the checkbox is clicked before the "Find Shortest Path" button is clicked. This test verifies that the
+   * program displays an error message telling the user to use the "Find Shortest Path" button before the checkbox.
+   */
+  @Test
+  public void testCheckboxBeforeShortestPath() {
+    Label shortestPathLabel = lookup("#shortestPathLabel").query();
+
+    clickOn("#startPathField");
+    write("Union South");
+    clickOn("#endPathField");
+    write("Atmospheric, Oceanic and Space Sciences");
+    clickOn("#walkingTimesCheckbox");
+    assertEquals("Cannot use checkbox when shortest path has not been found.", shortestPathLabel.getText());
+  }
+
+  /**
+   * This test has the program find all locations that are within a specified time from the starting location. This test clicks on
+   * the findLocations button and verifies that it displays the correct list of locations.
    */
   @Test
   public void testReachableLocations() {
-    Label reachableLabel = lookup("#reachableLabel").query();
+    Label locationsLabel = lookup("#reachableLocationsLabel").query();
+
+    clickOn("#startingLocationField");
+    write("Computer Sciences and Statistics");
+    clickOn("#timeField");
+    write("200");
     clickOn("#findLocationsButton");
-    assertEquals("Locations in 200sec walking distance:\n\tUnion South\n\tComputer Science",reachableLabel.getText());
+    assertEquals("Locations within 200 seconds of Computer Sciences and Statistics\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
   }
 
   /**
-   * To demonstrate the code being tested, you can run the SampleApp above
-   * as a JavaFX application through the following entry point.
+   * This method starts up our Frontend class.
    */
   public static void main(String[] args) {
-    Application.launch(FrontendPlaceholder.class);
+    Application.launch(Frontend.class);
   }
 }
