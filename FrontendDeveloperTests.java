@@ -36,12 +36,13 @@ public class FrontendDeveloperTests extends ApplicationTest {
   @Test
   public void testAboutAndQuit() {
     Label aboutLabel = lookup("#aboutLabel").query();
-    String label = "This application loads a graph from a dot file and has two features users can use. \nThe " +
-        "\"Find Shortest Path\" feature allows the user to input a starting location and an ending location. The program then\n" +
-        "finds the shortest path between the two locations, starting at the starting location and ending at the ending location.\n" +
-        "The walking times checkbox allows the user to adds times between the adjacent locations along a path. The \"Locations\n" +
-        "Within\" feature allows the user to input a starting location and a time. The program finds all the locations that are\n" +
-        "within the specified time from the starting location. Click the About button again to close this text.";
+    String label = "This application loads a graph from a dot file and has two features users can use.\n" +
+            "The \"Find Shortest Path\" feature allows the user to input a starting location and an ending location.\n" +
+            "The program then finds the shortest path between the two locations, starting at the start location and\n" +
+            "ending at the end location. When checked, the walking times checkbox displays the times between the\n" +
+            "adjacent locations along a path. The \"Locations Within\" feature allows the user to input a starting\n" +
+            "location and a time. The program finds all the locations that are within the specified time from the\n" +
+            "starting location. Click the About button again to close this text.";
 
     clickOn("#aboutButton");
     assertEquals(label, aboutLabel.getText());
@@ -96,7 +97,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
     clickOn("#endPathField");
     write("Atmospheric, Oceanic and Space Sciences");
     clickOn("#walkingTimesCheckbox");
-    assertEquals("Cannot use the checkbox when a shortest path has not been found.", shortestPathLabel.getText());
+    assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", shortestPathLabel.getText());
   }
 
   /**
@@ -119,6 +120,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    * This method starts up our Frontend class.
    */
   public static void main(String[] args) {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Application.launch(Frontend.class);
   }
 }

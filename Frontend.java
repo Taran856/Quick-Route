@@ -74,7 +74,7 @@ public class Frontend extends Application implements FrontendInterface {
 
     startPathField = new TextField("");
     startPathField.setId("startPathField");
-    startPathField.setLayoutX(150);
+    startPathField.setLayoutX(175);
     startPathField.setLayoutY(12);
     parent.getChildren().add(startPathField);
 
@@ -86,7 +86,7 @@ public class Frontend extends Application implements FrontendInterface {
 
     endPathField = new TextField("");
     endPathField.setId("endPathField");
-    endPathField.setLayoutX(150);
+    endPathField.setLayoutX(175);
     endPathField.setLayoutY(44);
     parent.getChildren().add(endPathField);
 
@@ -149,7 +149,7 @@ public class Frontend extends Application implements FrontendInterface {
 
     walkingTimesCheckbox.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
       if (shortestPath == null) {
-        shortestPathLabel.setText("Cannot use the checkbox when a shortest path has not been found.");
+        shortestPathLabel.setText("Cannot use the checkbox when a shortest path\nhas not been found.");
       } else {
         String label = "Results List: ";
 
@@ -176,32 +176,32 @@ public class Frontend extends Application implements FrontendInterface {
   public void createFindReachableControls(Pane parent) {
     startingLocationLabel = new Label("Location Selector:");
     startingLocationLabel.setId("startingLocationLabel");
-    startingLocationLabel.setLayoutX(400);
+    startingLocationLabel.setLayoutX(425);
     startingLocationLabel.setLayoutY(16);
     parent.getChildren().add(startingLocationLabel);
     startingLocationField = new TextField();
     startingLocationField.setId("startingLocationField");
-    startingLocationField.setLayoutX(500);
+    startingLocationField.setLayoutX(545);
     startingLocationField.setLayoutY(12);
     parent.getChildren().add(startingLocationField);
     timeLabel = new Label("Time Selector:");
     timeLabel.setId("timeLabel");
-    timeLabel.setLayoutX(400);
+    timeLabel.setLayoutX(425);
     timeLabel.setLayoutY(48);
     parent.getChildren().add(timeLabel);
     timeField = new TextField();
     timeField.setId("timeField");
-    timeField.setLayoutX(480);
+    timeField.setLayoutX(525);
     timeField.setLayoutY(44);
     parent.getChildren().add(timeField);
     findLocationsButton = new Button("Find Locations");
     findLocationsButton.setId("findLocationsButton");
-    findLocationsButton.setLayoutX(400);
+    findLocationsButton.setLayoutX(425);
     findLocationsButton.setLayoutY(80);
     parent.getChildren().add(findLocationsButton);
     reachableLocationsLabel = new Label("");
     reachableLocationsLabel.setId("reachableLocationsLabel");
-    reachableLocationsLabel.setLayoutX(400);
+    reachableLocationsLabel.setLayoutX(425);
     reachableLocationsLabel.setLayoutY(112);
     parent.getChildren().add(reachableLocationsLabel);
 
@@ -244,7 +244,7 @@ public class Frontend extends Application implements FrontendInterface {
     aboutLabel = new Label("");
     aboutLabel.setId("aboutLabel");
     aboutLabel.setLayoutX(32);
-    aboutLabel.setLayoutY(450);
+    aboutLabel.setLayoutY(430);
     parent.getChildren().add(aboutLabel);
 
     aboutButton.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
@@ -252,12 +252,13 @@ public class Frontend extends Application implements FrontendInterface {
         aboutLabel.setText("");
         aboutShown = false;
       } else {
-        String label = "This application loads a graph from a dot file and has two features users can use. \nThe " +
-            "\"Find Shortest Path\" feature allows the user to input a starting location and an ending location. The program then\n" +
-            "finds the shortest path between the two locations, starting at the starting location and ending at the ending location.\n" +
-            "The walking times checkbox allows the user to adds times between the adjacent locations along a path. The \"Locations\n" +
-            "Within\" feature allows the user to input a starting location and a time. The program finds all the locations that are\n" +
-            "within the specified time from the starting location. Click the About button again to close this text.";
+        String label = "This application loads a graph from a dot file and has two features users can use.\n" +
+            "The \"Find Shortest Path\" feature allows the user to input a starting location and an ending location.\n" +
+	    "The program then finds the shortest path between the two locations, starting at the start location and\n" +
+	    "ending at the end location. When checked, the walking times checkbox displays the times between the\n" +
+	    "adjacent locations along a path. The \"Locations Within\" feature allows the user to input a starting\n" +
+	    "location and a time. The program finds all the locations that are within the specified time from the\n" +
+	    "starting location. Click the About button again to close this text.";
         aboutLabel.setText(label);
         aboutShown = true;
       }
