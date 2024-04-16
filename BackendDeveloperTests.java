@@ -4,18 +4,26 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BackendDeveloperTests {
+
+  GraphADT<String,Double> graph = new GraphPlaceholder();
+  BackendInterface backend = new Backend(graph);
+
+//  public void setup() throws IOException {
+//    backend.loadGraphData("campus.dot");
+//  }
   @Test
-  public void testGetListOfAllLocations() {
-    BackendInterface backend = new BackendPlaceholder(null);
+  public void testGetListOfAllLocations() throws IOException {
+    backend.loadGraphData("campus.dot");
     List<String> locations = backend.getListOfAllLocations();
     assertNotNull(locations);
     assertFalse(locations.isEmpty());
   }
 
+
   // Test method to check if findShortestPath() returns a path between two locations
   @Test
-  public void testFindShortestPath() {
-    BackendInterface backend = new BackendPlaceholder(null);
+  public void testFindShortestPath() throws IOException {
+    backend.loadGraphData("campus.dot");
     List<String> path = backend.findShortestPath("Union South", "Atmospheric, Oceanic and Space Sciences");
     assertNotNull(path);
     assertFalse(path.isEmpty());
@@ -25,8 +33,8 @@ public class BackendDeveloperTests {
 
   // Test method to check if getTravelTimesOnPath() returns travel times for a path
   @Test
-  public void testGetTravelTimesOnPath() {
-    BackendInterface backend = new BackendPlaceholder(null);
+  public void testGetTravelTimesOnPath() throws IOException {
+    backend.loadGraphData("campus.dot");
     List<Double> travelTimes = backend.getTravelTimesOnPath("Union South", "Atmospheric, Oceanic and Space Sciences");
     assertNotNull(travelTimes);
     assertFalse(travelTimes.isEmpty());
@@ -36,8 +44,8 @@ public class BackendDeveloperTests {
 
   // Test method to check if getReachableLocations() returns reachable locations within a specified time
   @Test
-  public void testGetReachableLocations() {
-    BackendInterface backend = new BackendPlaceholder(null);
+  public void testGetReachableLocations() throws IOException {
+    backend.loadGraphData("campus.dot");
     List<String> reachableLocations = backend.getReachableLocations("Union South", 3600); // 1 hour in seconds
     assertNotNull(reachableLocations);
     assertFalse(reachableLocations.isEmpty());
