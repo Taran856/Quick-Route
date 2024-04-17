@@ -1,16 +1,19 @@
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BackendDeveloperTests {
 
-  GraphADT<String,Double> graph = new GraphPlaceholder();
+  GraphADT<String, Double> graph = new GraphPlaceholder();
   BackendInterface backend = new Backend(graph);
 
-//  public void setup() throws IOException {
-//    backend.loadGraphData("campus.dot");
-//  }
+  /**
+   * Tests the method getListOfAllLocations().
+   * @throws IOException if there was a problem reading in the specified file
+   */
   @Test
   public void testGetListOfAllLocations() throws IOException {
     backend.loadGraphData("campus.dot");
@@ -20,33 +23,45 @@ public class BackendDeveloperTests {
   }
 
 
-  // Test method to check if findShortestPath() returns a path between two locations
+  /**
+   * Tests the method findShortestPath().
+   * @throws IOException if there was a problem reading in the specified file
+   */
   @Test
   public void testFindShortestPath() throws IOException {
     backend.loadGraphData("campus.dot");
-    List<String> path = backend.findShortestPath("Union South", "Atmospheric, Oceanic and Space Sciences");
+    List<String> path =
+        backend.findShortestPath("Union South", "Atmospheric, Oceanic and Space Sciences");
     assertNotNull(path);
     assertFalse(path.isEmpty());
     assertEquals("Union South", path.get(0));
     assertEquals("Atmospheric, Oceanic and Space Sciences", path.get(path.size() - 1));
   }
 
-  // Test method to check if getTravelTimesOnPath() returns travel times for a path
+  /**
+   * Tests the method getTravelTimesOnPath().
+   * @throws IOException if there was a problem reading in the specified file
+   */
   @Test
   public void testGetTravelTimesOnPath() throws IOException {
     backend.loadGraphData("campus.dot");
-    List<Double> travelTimes = backend.getTravelTimesOnPath("Union South", "Atmospheric, Oceanic and Space Sciences");
+    List<Double> travelTimes =
+        backend.getTravelTimesOnPath("Union South", "Atmospheric, Oceanic and Space Sciences");
     assertNotNull(travelTimes);
     assertFalse(travelTimes.isEmpty());
     assertEquals(2, travelTimes.size());
     assertTrue(travelTimes.stream().allMatch(time -> time > 0));
   }
 
-  // Test method to check if getReachableLocations() returns reachable locations within a specified time
+  /**
+   * Tests the method getReachableLocations().
+   * @throws IOException if there was a problem reading in the specified file
+   */
   @Test
   public void testGetReachableLocations() throws IOException {
     backend.loadGraphData("campus.dot");
-    List<String> reachableLocations = backend.getReachableLocations("Union South", 3600); // 1 hour in seconds
+    List<String> reachableLocations =
+        backend.getReachableLocations("Union South", 400);
     assertNotNull(reachableLocations);
     assertFalse(reachableLocations.isEmpty());
     assertTrue(reachableLocations.contains("Atmospheric, Oceanic and Space Sciences"));
