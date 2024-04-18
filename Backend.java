@@ -35,15 +35,13 @@ public class Backend implements BackendInterface {
       reader.close();
 
     } catch (IOException io) {
-      io.printStackTrace();
+      throw new IOException("Wrong file input");
     }
     // Using regex to filter out locations and the weights.
     Pattern locationMatch = Pattern.compile("\"[\\w+\\s.'-?&]+?\"");
     Matcher locationMatcher = locationMatch.matcher(data);
     Pattern weightMatch = Pattern.compile("=[\\d+?.]+");
     Matcher weightMatcher = weightMatch.matcher(data);
-
-
 
     // Initializing an integer which will allow us to group the edges.
     int i = 0;

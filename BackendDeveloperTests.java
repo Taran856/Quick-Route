@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BackendDeveloperTests {
 
@@ -66,5 +67,22 @@ public class BackendDeveloperTests {
     assertFalse(reachableLocations.isEmpty());
     assertTrue(reachableLocations.contains("Atmospheric, Oceanic and Space Sciences"));
     assertTrue(reachableLocations.contains("Memorial Union"));
+  }
+
+  /**
+   * Tests loadGraphData with a wrong input.
+   * @throws IOException if there was a problem reading in the specified file
+   */
+  @Test
+  public void TestWrongInput() throws IOException {
+    boolean thrown = false;
+    try {
+      backend.loadGraphData("camp.dot");
+    }
+    catch (IOException ioException){
+      thrown = true;
+    }
+    assertTrue(thrown);
+
   }
 }
