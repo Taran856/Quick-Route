@@ -1,0 +1,58 @@
+Script started on 2024-04-14 15:18:08-05:00 [TERM="xterm-256color" TTY="/dev/pts/10" COLUMNS="204" LINES="55"]
+[?2004h[nchang@snares-02] (1)$ git status
+[?2004lOn branch frontend
+Your branch is up to date with 'origin/frontend'.
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	[31mlog[m
+
+nothing added to commit but untracked files present (use "git add" to track)
+[?2004h[nchang@snares-02] (2)$ git log -1
+[?2004l[?1h=[33mcommit f39b384039d6f4b8d377c324523f1605bb41548f[m[33m ([m[1;36mHEAD -> [m[1;32mfrontend[m[33m, [m[1;31morigin/frontend[m[33m)[m[m
+Author: Nick Chang <nlchang2@wisc.edu>[m
+Date:   Sun Apr 14 15:17:03 2024 -0500[m
+[m
+    Added Makefile[m
+[K[?1l>[?2004h[nchang@snares-02] (3)$ make clean
+[?2004lrm *.class
+rm: cannot remove '*.class': No such file or directory
+make: *** [Makefile:8: clean] Error 1
+[?2004h[nchang@snares-02] (4)$ ls
+[?2004lApp.java               BackendPlaceholder.java  FrontendDeveloperTests.java  Frontend.java             GraphADT.java          log
+BackendInterface.java  campus.dot               FrontendInterface.java       FrontendPlaceholder.java  GraphPlaceholder.java  Makefile
+[?2004h[nchang@snares-02] (5)$ make runTests
+[?2004ljavac --module-path ../javafx/lib --add-modules javafx.controls -cp .:../junit5fx.jar FrontendDeveloperTests.java
+java --module-path ../javafx/lib --add-modules javafx.controls --add-opens javafx.graphics/com.sun.javafx.application=ALL-UNNAMED -jar ../junit5fx.jar -cp . -c FrontendDeveloperTests
+
+Thanks for using JUnit! Support its development at https://junit.org/sponsoring
+
+[36m╷[0m
+[36m├─[0m [36mJUnit Jupiter[0m [32m✔[0m
+[36m│  └─[0m [36mFrontendDeveloperTests[0m [32m✔[0m
+[36m│     ├─[0m [34mtestCheckboxBeforeShortestPath()[0m [32m✔[0m
+[36m│     ├─[0m [34mtestReachableLocations()[0m [32m✔[0m
+[36m│     ├─[0m [34mtestfindPathButton()[0m [32m✔[0m
+[36m│     ├─[0m [34mtestAboutAndQuit()[0m [32m✔[0m
+[36m│     └─[0m [34mtestWalkingTimes()[0m [32m✔[0m
+[36m├─[0m [36mJUnit Vintage[0m [32m✔[0m
+[36m└─[0m [36mJUnit Platform Suite[0m [32m✔[0m
+
+Test run finished after 20809 ms
+[         4 containers found      ]
+[         0 containers skipped    ]
+[         4 containers started    ]
+[         0 containers aborted    ]
+[         4 containers successful ]
+[         0 containers failed     ]
+[         5 tests found           ]
+[         0 tests skipped         ]
+[         5 tests started         ]
+[         0 tests aborted         ]
+[         5 tests successful      ]
+[         0 tests failed          ]
+
+[?2004h[nchang@snares-02] (6)$ exit
+[?2004lexit
+
+Script done on 2024-04-14 15:19:22-05:00 [COMMAND_EXIT_CODE="0"]
