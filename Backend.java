@@ -2,6 +2,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -129,16 +130,20 @@ public class Backend implements BackendInterface {
     // initializing reachableLocations and listOfAllLocations.
     List<String> reachableLocations = new ArrayList<>();
     List<String> listOfAllLocations = getListOfAllLocations();
-    double cost;
+    double cost = 0.0;
     // Using a for loop to iterate over the listOfAllLocations to get all the locations reachable
     // in those timesInSec.
     for (int i = 0; i < listOfAllLocations.size(); i++) {
-      cost = graph.shortestPathCost(startLocation, listOfAllLocations.get(i));
-      if (cost <= timesInSec) {
-        reachableLocations.add(listOfAllLocations.get(i));
+      try{
+        cost = graph.shortestPathCost(startLocation, listOfAllLocations.get(i));
+        if (cost <= timesInSec) {
+          reachableLocations.add(listOfAllLocations.get(i));
+        }
+      }
+      catch (NoSuchElementException exception){
+
       }
     }
-
     return reachableLocations;
   }
 }
