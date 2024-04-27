@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testfx.framework.junit5.ApplicationTest;
 
 import java.io.IOException;
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BackendDeveloperTests {
+public class BackendDeveloperTests extends ApplicationTest{
 
   GraphADT<String, Double> graph = new GraphPlaceholder();
   BackendInterface backend = new Backend(graph);
@@ -19,7 +20,7 @@ public class BackendDeveloperTests {
    */
   @BeforeEach
   public void setup() throws Exception {
-    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
+    ApplicationTest.launch(SampleApp.class);
   }
 
   /**
@@ -98,12 +99,11 @@ public class BackendDeveloperTests {
   }
 
   /**
-   * This test has the program find all locations that are within a specified time from the starting location. This test clicks on
-   * the findLocations button and verifies that it displays the correct list of locations.
+   * Tests Reachable Locations.
    */
   @Test
   public void IntergrationTestReachableLocations() {
-    Label locationsLabel = lookup("#reachableLocationsLabel").query();
+    Label label = lookup("#reachableLocationsLabel").query();
 
     clickOn("#startingLocationField");
     write("Chadbourne Residence Hall");
@@ -114,12 +114,11 @@ public class BackendDeveloperTests {
   }
 
   /**
-   * This test tests when the checkbox is clicked before the "Find Shortest Path" button is clicked. This test verifies that the
-   * program displays an error message telling the user to use the "Find Shortest Path" button before the checkbox.
+   * Tests Wrong CheckBox click
    */
   @Test
   public void IntegrationTestWrongCheckBox() {
-    Label shortestPathLabel = lookup("#shortestPathLabel").query();
+    Label label = lookup("#shortestPathLabel").query();
 
     clickOn("#startPathField");
     write("Memorial Union");
