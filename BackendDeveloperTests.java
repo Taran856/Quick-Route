@@ -132,7 +132,6 @@ public class BackendDeveloperTests extends ApplicationTest{
    * This method starts up our Frontend class.
    */
   public static void main(String[] args) {
-    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Application.launch(Frontend.class);
   }
 }
