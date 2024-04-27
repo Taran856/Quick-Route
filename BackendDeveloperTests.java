@@ -106,11 +106,11 @@ public class BackendDeveloperTests {
     Label locationsLabel = lookup("#reachableLocationsLabel").query();
 
     clickOn("#startingLocationField");
-    write("Computer Sciences and Statistics");
+    write("Chadbourne Residence Hall");
     clickOn("#timeField");
-    write("200");
+    write("500");
     clickOn("#findLocationsButton");
-    assertEquals("Locations within 200 seconds of Computer Sciences and Statistics\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
+    assertEquals("Locations within 500 seconds of Chadbourne Residence Hall\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
   }
 
   /**
@@ -118,13 +118,13 @@ public class BackendDeveloperTests {
    * program displays an error message telling the user to use the "Find Shortest Path" button before the checkbox.
    */
   @Test
-  public void IntegrationTestCheckboxBeforeShortestPath() {
+  public void IntegrationTestWrongCheckBox() {
     Label shortestPathLabel = lookup("#shortestPathLabel").query();
 
     clickOn("#startPathField");
-    write("Union South");
+    write("Memorial Union");
     clickOn("#endPathField");
-    write("Atmospheric, Oceanic and Space Sciences");
+    write("Chadbourne Residence Hall");
     clickOn("#walkingTimesCheckbox");
     assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", shortestPathLabel.getText());
   }
