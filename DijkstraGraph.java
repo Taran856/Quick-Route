@@ -1,6 +1,6 @@
 // === CS400 Spring 2024 File Header Information ===
-// Name: Taran Patel
-// Email: tppatel4@wisc.edu
+// Name: Nick Chang
+// Email: nlchang2@wisc.edu
 // Lecturer: Florian 
 // Notes to Grader: N/A
 
@@ -124,13 +124,17 @@ public class DijkstraGraph<NodeType, EdgeType extends Number>
      * @return list of data item from node along this shortest path
      */
     public List<NodeType> shortestPathData(NodeType start, NodeType end) {
-      LinkedList<NodeType> path = new LinkedList<NodeType>();
-      SearchNode node = computeShortestPath(start, end);
-      while (node != null) {
-        path.addFirst(node.node.data);
-        node = node.predecessor;
+      try {
+        LinkedList<NodeType> path = new LinkedList<NodeType>();
+        SearchNode node = computeShortestPath(start, end);
+        while (node != null) {
+          path.addFirst(node.node.data);
+          node = node.predecessor;
+        }
+        return path;
+      } catch (NoSuchElementException e) {
+        return new LinkedList<NodeType>();
       }
-      return path;
 	  }
 
     /**

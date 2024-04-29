@@ -1,5 +1,10 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.testfx.framework.junit5.ApplicationTest;
 
@@ -13,8 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 
 
-import javafx.application.Application;
-
 public class FrontendDeveloperTests extends ApplicationTest {
 
   /**
@@ -25,7 +28,6 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @BeforeEach
   public void setup() throws Exception {
-    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     ApplicationTest.launch(Frontend.class);
   }
 
@@ -35,6 +37,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @Test
   public void testAboutAndQuit() {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Label aboutLabel = lookup("#aboutLabel").query();
     String label = "This application loads a graph from a dot file and has two features users can use.\n" +
             "The \"Find Shortest Path\" feature allows the user to input a starting location and an ending location.\n" +
@@ -56,6 +59,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @Test
   public void testfindPathButton() {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Label shortestPathLabel = lookup("#shortestPathLabel").query();
     
     clickOn("#startPathField");
@@ -73,6 +77,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @Test
   public void testWalkingTimes() {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Label shortestPathLabel = lookup("#shortestPathLabel").query();
     
     clickOn("#startPathField");
@@ -90,6 +95,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @Test
   public void testCheckboxBeforeShortestPath() {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Label shortestPathLabel = lookup("#shortestPathLabel").query();
 
     clickOn("#startPathField");
@@ -97,7 +103,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
     clickOn("#endPathField");
     write("Atmospheric, Oceanic and Space Sciences");
     clickOn("#walkingTimesCheckbox");
-    assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", shortestPathLabel.getText());
+    assertEquals("Cannot use the checkbox when a shortest path has not been found.", shortestPathLabel.getText());
   }
 
   /**
@@ -106,6 +112,7 @@ public class FrontendDeveloperTests extends ApplicationTest {
    */
   @Test
   public void testReachableLocations() {
+    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
     Label locationsLabel = lookup("#reachableLocationsLabel").query();
 
     clickOn("#startingLocationField");
@@ -113,14 +120,97 @@ public class FrontendDeveloperTests extends ApplicationTest {
     clickOn("#timeField");
     write("200");
     clickOn("#findLocationsButton");
-    assertEquals("Locations within 200 seconds of Computer Sciences and Statistics\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
+    assertEquals("Locations within 200 seconds of Computer Sciences and Statistics\n\tAtmospheric, "
+        +"Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
+  }
+
+  /**
+   * This integration test has the program find the shortest path starting at Memorial Union and ending at Union South using our
+   * data stored in campus.dot. Then the checkbox is clicked to include walking times. The result is checked to make sure the 
+   * program displays the correct shortest path and walking times.
+   */
+  @Test
+  public void integrationTestWalkingTimes() {
+    Frontend.setBackend(new Backend(new DijkstraGraph<String, Double>()));
+    Label shortestPathLabel = lookup("#shortestPathLabel").query();
+    
+    clickOn("#startPathField");
+    write("Memorial Union");
+    clickOn("#endPathField");
+    write("Union South");
+    clickOn("#findPathButton");
+    clickOn("#walkingTimesCheckbox");
+    assertEquals("Results List: \n\tMemorial Union\n\t  (176.7 seconds)\n\tRadio Hall\n\t  (113.0 seconds)\n\tEducation Building\n\t  (187.6 seconds)"
+        +"\n\tSouth Hall\n\t  (112.80000000000001 seconds)\n\tLaw Building\n\t  (174.7 seconds)\n\tX01\n\t  (65.5 seconds)\n\tLuther Memorial Church"
+        +"\n\t  (183.50000000000003 seconds)\n\tNoland Hall\n\t  (124.19999999999999 seconds)\n\tMeiklejohn House\n\t  (164.20000000000002 seconds)"
+        +"\n\tComputer Sciences and Statistics\n\t  (176.00000000000003 seconds)\n\tUnion South", shortestPathLabel.getText());
+  }
+
+  /**
+   * This integration test has the program find all locations that are within 200 seconds from Memorial Union using our
+   * data stored in campus.dot. This test verifies that the program displays the correct list of locations.
+   */
+  @Test
+  public void integrationTestReachableLocations() {
+    Frontend.setBackend(new Backend(new DijkstraGraph<String, Double>()));
+    Label locationsLabel = lookup("#reachableLocationsLabel").query();
+
+    clickOn("#startingLocationField");
+    write("Memorial Union");
+    clickOn("#timeField");
+    write("200");
+    clickOn("#findLocationsButton");
+    assertEquals("Locations within 200 seconds of Memorial Union\n\tMemorial Union\n\tScience Hall\n\tBrat Stand\n\t"
+        +"Helen C White Hall\n\tRadio Hall\n\tWisconsin State Historical Society",locationsLabel.getText());
+  }
+
+  /**
+   * This test tests the backend's findShortestPath() method and verifies that it returns the correct list of
+   * locations.
+   */
+  @Test
+  public void partnerTestShortestPath() {
+    try {
+      Backend backend = new Backend(new DijkstraGraph<String, Double>());
+      backend.loadGraphData("campus.dot");
+      List<String> actualPath = backend.findShortestPath("Bascom Hall", "Humphrey Hall");
+      String[] expectedPath = new String[] {"Bascom Hall", "Carillon Tower", "Van Hise Hall", "Nancy Nicholas Hall",
+          "Agricultural Hall", "King Hall", "Soils Building", "Carson Gulley Center", "Slichter Residence Hall",
+          "Humphrey Hall"};
+      if (Arrays.asList(expectedPath).equals(actualPath) == false) {
+        Assertions.fail();
+      }
+      
+    } catch (Exception e) {
+      Assertions.fail();
+    }
+  }
+
+  /**
+   * This test tests the backend's reachableLocations() method and verifies that it returns the correct list 
+   * of reachable locations.
+   */
+  @Test
+  public void partnerTestReachableLocations() {
+    try {
+      Backend backend = new Backend(new DijkstraGraph<String, Double>());
+      backend.loadGraphData("campus.dot");
+      List<String> actualLocations = backend.getReachableLocations("Chadbourne Residence Hall", 150);
+      String[] expectedLocations = new String[] {"Music Hall", "Chadbourne Residence Hall"};
+      if (Arrays.asList(expectedLocations).equals(actualLocations) == false) {
+        Assertions.fail();
+      }
+      
+    } catch (Exception e) {
+      Assertions.fail();
+    }
   }
 
   /**
    * This method starts up our Frontend class.
    */
   public static void main(String[] args) {
-    Frontend.setBackend(new BackendPlaceholder(new GraphPlaceholder()));
+    Frontend.setBackend(new Backend(new DijkstraGraph<String, Double>()));
     Application.launch(Frontend.class);
   }
 }

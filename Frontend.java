@@ -17,7 +17,7 @@ public class Frontend extends Application implements FrontendInterface {
   private static BackendInterface back;
   private String startingLocation = "";
   private String endingLocation = "";
-  private List<String> shortestPath;
+  private List<String> shortestPath = new LinkedList<String>();
 
   private Label startPathLabel;
   private TextField startPathField;
@@ -40,22 +40,22 @@ public class Frontend extends Application implements FrontendInterface {
   private Button quitButton;
 
   public static void setBackend(BackendInterface back) {
-    Frontend.back = back;
+    try {
+      Frontend.back = back;
+      back.loadGraphData("campus.dot");
+    } catch (IOException e) {
+      System.out.println("The graph file could not be found.");
+    }
   }
 
   public void start(Stage stage) {
-    try {
-      Pane root = new Pane();
-      back.loadGraphData("campus.dot");
-      createAllControls(root);
+    Pane root = new Pane();
+    createAllControls(root);
 
-      Scene scene = new Scene(root, 800, 600);
-      stage.setScene(scene);
-      stage.setTitle("P2: Prototype");
-      stage.show();
-    } catch (IOException e) {
-      System.out.println("The file could not be read");
-    }
+    Scene scene = new Scene(root, 800, 600);
+    stage.setScene(scene);
+    stage.setTitle("P2: Prototype");
+    stage.show();
   }
 
   public void createAllControls(Pane parent) {
@@ -101,8 +101,8 @@ public class Frontend extends Application implements FrontendInterface {
       endingLocation = endPathField.getText();
       shortestPath = back.findShortestPath(startingLocation, endingLocation);
 
-      if (shortestPath == null) {
-        shortestPathLabel.setText("There was an error with finding the shortest path between " + startingLocation + " and " + endingLocation + ".");
+      if (shortestPath.isEmpty()) {
+        shortestPathLabel.setText("There was an error with finding the shortest path between your two\nchosen locations.");
       } else {
         String label = "Results List: ";
       
@@ -148,12 +148,11 @@ public class Frontend extends Application implements FrontendInterface {
     parent.getChildren().add(walkingTimesCheckbox);
 
     walkingTimesCheckbox.addEventHandler(MouseEvent.MOUSE_CLICKED, (event) -> {
-      if (shortestPath == null) {
-        shortestPathLabel.setText("Cannot use the checkbox when a shortest path\nhas not been found.");
-      } else {
-        String label = "Results List: ";
-
-        if (walkingTimesCheckbox.isSelected()) {
+      String label = "Results List: ";
+      if (walkingTimesCheckbox.isSelected()) {
+        if (shortestPath.isEmpty()) {
+          shortestPathLabel.setText("Cannot use the checkbox when a shortest path has not been found.");
+        } else {
           List<Double> shortestPathTimes = back.getTravelTimesOnPath(startingLocation, endingLocation);
           for (int i = 0; i<shortestPath.size(); i++) {
             label += "\n\t" + shortestPath.get(i);
@@ -162,13 +161,17 @@ public class Frontend extends Application implements FrontendInterface {
               label += "\n\t  (" + shortestPathTimes.get(i) + " seconds)";
             }
           }
+          shortestPathLabel.setText(label);
+        } 
+      } else {
+        if (shortestPath.isEmpty()) {
+          shortestPathLabel.setText("There was an error with finding the shortest path between your two\nchosen locations.");
         } else {
           for (int i = 0; i<shortestPath.size(); i++) {
             label += "\n\t" + shortestPath.get(i);
           }
+          shortestPathLabel.setText(label);
         }
-
-        shortestPathLabel.setText(label);
       }
     });
   }
@@ -212,8 +215,8 @@ public class Frontend extends Application implements FrontendInterface {
         String label = "Locations within " + time + " seconds of " + startingLocation;
         List<String> reachableLocations = back.getReachableLocations(startingLocation, Double.parseDouble(time));
 
-        if (reachableLocations == null) {
-          label = "There was an error with finding the locations within " + time + "seconds of " + startingLocation + ".";
+        if (reachableLocations.isEmpty()) {
+          label = "Your location could not be found in the graph.";
         } else {
           for (int i = 0; i<reachableLocations.size(); i++) {
             label += "\n\t" + reachableLocations.get(i);
@@ -222,7 +225,7 @@ public class Frontend extends Application implements FrontendInterface {
 
         reachableLocationsLabel.setText(label);
       } catch (NumberFormatException e) {
-        String label = "You must input an integer into the time field";
+        String label = "You must input a number into the time field";
         reachableLocationsLabel.setText(label);
       }
     });
