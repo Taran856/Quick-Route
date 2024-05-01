@@ -1,6 +1,14 @@
+runApp: 
+	javac BackendInterface.java
+	javac Backend.java
+	javac -cp .:../junit5.jar DijkstraGraph.java
+	javac App.java
+	java App
+
 runTests: runFDTests
 	javac BackendInterface.java
 	javac Backend.java
+	javac -cp .:../junit5.jar Dijkstra.java
 	javac -cp .:../junit5.jar BackendDeveloperTests.java
 	java -jar ../junit5.jar -cp . -c BackendDeveloperTests
 
@@ -10,8 +18,6 @@ runFDTests: FrontendDeveloperTests.class
 FrontendDeveloperTests.class: FrontendDeveloperTests.java
 	javac --module-path ../javafx/lib --add-modules javafx.controls -cp .:../junit5fx.jar FrontendDeveloperTests.java
 
-runApp: runFDTests
-	javac app.java
-	java app
+
 clean:
 	rm *.class
