@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.testfx.framework.junit5.ApplicationTest;
 
 import javafx.application.Application;
@@ -13,13 +15,12 @@ import javafx.scene.control.Button;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BackendDeveloperTests extends ApplicationTest{
 
   GraphADT<String, Double> graph = new GraphPlaceholder();
   BackendInterface backend = new Backend(graph);
+  FrontendInterface frontend = new Frontend();
   /**
    * This method launches the JavaFX application that you would like to test
    * BeforeEach of your @Test methods are run.  Copy and paste this into your
@@ -28,7 +29,7 @@ public class BackendDeveloperTests extends ApplicationTest{
    */
   @BeforeEach
   public void setup() throws Exception {
-    ApplicationTest.launch(BackendDeveloperTests.class);
+    ApplicationTest.launch(Frontend.class);
   }
 
   /**
@@ -118,7 +119,7 @@ public class BackendDeveloperTests extends ApplicationTest{
     clickOn("#timeField");
     write("500");
     clickOn("#findLocationsButton");
-    assertEquals("Locations within 500 seconds of Chadbourne Residence Hall\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",locationsLabel.getText());
+    assertEquals("Locations within 500 seconds of Chadbourne Residence Hall\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",label.getText());
   }
 
   /**
@@ -133,7 +134,7 @@ public class BackendDeveloperTests extends ApplicationTest{
     clickOn("#endPathField");
     write("Chadbourne Residence Hall");
     clickOn("#walkingTimesCheckbox");
-    assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", shortestPathLabel.getText());
+    assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", label.getText());
   }
 
   /**
