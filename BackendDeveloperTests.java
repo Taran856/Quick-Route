@@ -21,16 +21,6 @@ public class BackendDeveloperTests extends ApplicationTest{
   GraphADT<String, Double> graph = new GraphPlaceholder();
   BackendInterface backend = new Backend(graph);
   FrontendInterface frontend = new Frontend();
-  /**
-   * This method launches the JavaFX application that you would like to test
-   * BeforeEach of your @Test methods are run.  Copy and paste this into your
-   * own Test class, and change the SampleApp.class reference to instead
-   * refer to your own application class that extends Application.
-   */
-  @BeforeEach
-  public void setup() throws Exception {
-    ApplicationTest.launch(Frontend.class);
-  }
 
   /**
    * Tests the method getListOfAllLocations().
@@ -107,26 +97,35 @@ public class BackendDeveloperTests extends ApplicationTest{
 
   }
 
+
   /**
    * Tests Reachable Locations.
    */
   @Test
-  public void IntergrationTestReachableLocations() {
+  public void IntergrationTestReachableLocations() throws Exception{
+    ApplicationTest.launch(Frontend.class);
+    Frontend.setBackend(new Backend(new DijkstraGraph<String, Double>()));
     Label label = lookup("#reachableLocationsLabel").query();
 
     clickOn("#startingLocationField");
     write("Chadbourne Residence Hall");
     clickOn("#timeField");
-    write("500");
+    write("200");
     clickOn("#findLocationsButton");
-    assertEquals("Locations within 500 seconds of Chadbourne Residence Hall\n\tAtmospheric, Oceanic and Space Sciences\n\tMemorial Union",label.getText());
+    assertEquals(
+        "Locations within 200 seconds of Chadbourne Residence Hall\n\tLaw Building" + 
+            "\n\tMusic Hall\n\tBarnard Residence Hall\n\tChadbourne Residence Hall\n\tVilas " +
+            "Communication Hall",
+        label.getText());
   }
 
   /**
    * Tests Wrong CheckBox click
    */
   @Test
-  public void IntegrationTestWrongCheckBox() {
+  public void IntegrationTestWrongCheckBox() throws Exception{
+    ApplicationTest.launch(Frontend.class);
+    Frontend.setBackend(new Backend(new DijkstraGraph<String, Double>()));
     Label label = lookup("#shortestPathLabel").query();
 
     clickOn("#startPathField");
@@ -134,13 +133,7 @@ public class BackendDeveloperTests extends ApplicationTest{
     clickOn("#endPathField");
     write("Chadbourne Residence Hall");
     clickOn("#walkingTimesCheckbox");
-    assertEquals("Cannot use the checkbox when a shortest path\nhas not been found.", label.getText());
+    assertEquals("Cannot use the checkbox when a shortest path has not been found.", label.getText());
   }
 
-  /**
-   * This method starts up our Frontend class.
-   */
-  public static void main(String[] args) {
-    Application.launch(Frontend.class);
-  }
 }
