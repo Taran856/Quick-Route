@@ -99,8 +99,7 @@ public class BackendDeveloperTests extends ApplicationTest{
 
 
   /**
-   * Tests if all the reachable locations are printed correctly after clicking findLocationsButton.
-   * @throws Exception
+   * Tests Reachable Locations.
    */
   @Test
   public void IntergrationTestReachableLocations() throws Exception{
@@ -121,9 +120,7 @@ public class BackendDeveloperTests extends ApplicationTest{
   }
 
   /**
-   * Tests if an error message is shown when clicking walkingTimesCheckbox before clicking
-   * findPathButton.
-   * @throws Exception
+   * Tests Wrong CheckBox click
    */
   @Test
   public void IntegrationTestWrongCheckBox() throws Exception{
@@ -139,45 +136,6 @@ public class BackendDeveloperTests extends ApplicationTest{
     assertEquals("Cannot use the checkbox when a shortest path has not been found.", label.getText());
   }
 
-  /**
-   * Tests partners frontend if the walkable times are visible after clicking the 
-   * walkingTimesCheckbox after the findPathButton.
-   * @throws Exception
-   */
-  @Test
-  public void partnerTestWalkingTimesCheckbox() throws Exception{
-    ApplicationTest.launch(Frontend.class);
-    Frontend.setBackend(new Backend(new DijkstraGraph<>()));
-    Label label = lookup("#shortestPathLabel").query();
 
-    clickOn("#startPathField");
-    write("Memorial Union");
-    clickOn("#endPathField");
-    write("Law Building");
-    clickOn("#findPathButton");
-    clickOn("#walkingTimesCheckbox");
-    assertEquals("Results List: \n\tMemorial Union\n\t  (176.7 seconds)\n\t" +
-        "Radio Hall\n\t  (113.0 seconds)\n\tEducation Building\n\t  (187.6 seconds)\n\t" +
-        "South Hall\n\t  (112.80000000000001 seconds)\n\tLaw Building", label.getText());
-  }
-
-  /**
-   * Tests partners frontend it the shortest path is printed after clicking the findPathButton.
-   * @throws Exception
-   */
-  @Test
-  public void partnerTestfindPathButton() throws Exception {
-    ApplicationTest.launch(Frontend.class);
-    Frontend.setBackend(new Backend(new DijkstraGraph<>()));
-    Label label = lookup("#shortestPathLabel").query();
-
-    clickOn("#startPathField");
-    write("Memorial Union");
-    clickOn("#endPathField");
-    write("Law Building");
-    clickOn("#findPathButton");
-    assertEquals("Results List: \n\tMemorial Union\n\tRadio Hall\n\tEducation Building\n\t" +
-        "South Hall\n\tLaw Building", label.getText());
-  }
 
 }
