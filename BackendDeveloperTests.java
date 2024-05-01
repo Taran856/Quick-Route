@@ -2,6 +2,14 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import javafx.application.Application;
+import javafx.stage.Window;
+import javafx.stage.Stage;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +28,7 @@ public class BackendDeveloperTests extends ApplicationTest{
    */
   @BeforeEach
   public void setup() throws Exception {
-    ApplicationTest.launch(SampleApp.class);
+    ApplicationTest.launch(BackendDeveloperTests.class);
   }
 
   /**
