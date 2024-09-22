@@ -35,28 +35,28 @@ This file implements the `MapADT` interface using Java's `HashMap`. It provides 
 - Size method to get the number of key-value pairs stored, but it does not support capacity retrieval.
 
 ### 5. `DijkstraGraph.java`
-
+This file implements Dijkstra's algorithm specifically for the directed graph defined in `GraphADT.java`. It contains the logic to compute the shortest path between nodes, leveraging the methods provided by the graph ADT.
 
 ### 6. `Backend.java`
-(Include this file description if applicable to your project) This file could serve as the backend logic for handling graph operations, interacting with the data structures, and performing necessary computations.
+This file serves as the backend logic for handling graph operations, interacting with the data structures, and performing necessary computations.
 
 ### 7. `BackendInterface.java`
-(Include this file description if applicable to your project) This interface might define the methods available in the backend for manipulating graph data, ensuring a clear contract for implementation.
+This interface defines the methods available in the backend for manipulating graph data, ensuring a clear contract for implementation.
 
 ### 8. `App.java`
-(Include this file description if applicable to your project) This file could contain the main application logic, initializing the graph and map structures, and facilitating user interaction.
+This file contains the main application logic, initializing the graph and map structures, and facilitating user interaction.
 
 ### 9. `Makefile`
 A Makefile for building and running the Java application. It includes targets for compiling the necessary files and running tests with the JUnit framework.
 
 ### 10. `FrontendDeveloperTests.java`
-(Include this file description if applicable to your project) This file contains unit tests for the frontend operations of the application, ensuring that the implemented functionalities work as intended.
+This file contains unit tests for the frontend operations of the application, ensuring that the implemented functionalities work as intended.
 
 ### 11. `BackendDeveloperTests.java`
-(Include this file description if applicable to your project) This file contains unit tests for the backend operations, validating the integrity and performance of graph-related methods.
+This file contains unit tests for the backend operations, validating the integrity and performance of graph-related methods.
 
 ### 12. `DijkstraGraphTests.java`
-(Include this file description if applicable to your project) This file includes tests specifically for verifying the correctness of the Dijkstra's algorithm implementation.
+This file includes tests specifically for verifying the correctness of the Dijkstra's algorithm implementation.
 
 ## Usage
 
